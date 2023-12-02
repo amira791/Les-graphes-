@@ -1,0 +1,26 @@
+body{
+    background-color: rgb(250, 227, 197);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#title{
+    margin: 0px;
+}
+#graph-manipulation{
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: rgb(217, 165, 69);
+    color: #000000;
+    font-size: 15px;
+    border-radius: 12px;
+    border: none;
+    padding: 8px 12px 8px 12px;
+    margin-right: 10px;
+}
+#graph-manipulation button{
+    background-color: #66a3ff;
+}
