@@ -1,26 +1,26 @@
-function DFS(u, graph, discovery, low, parent, aps) {
+function DFS(currentNode, graph, discovery, low, parent, aps) {
     let children = 0;
-    discovery[u] = low[u] = ++time;
+    discovery[currentNode] = low[currentNode] = ++time;
 
-    const neighbors = graph[u];
+    const neighbors = graph[currentNode];
 
     for (const v of neighbors) {
         if (!discovery[v]) {
             children++;
-            parent[v] = u;
+            parent[v] = currentNode;
             DFS(v, graph, discovery, low, parent, aps);
 
-            low[u] = Math.min(low[u], low[v]);
+            low[currentNode] = Math.min(low[u], low[v]);
 
-            if (parent[u] === -1 && children > 1) {
-                aps.add(u);
+            if (parent[currentNode] === -1 && children > 1) {
+                aps.add(currentNode);
             }
 
-            if (parent[u] !== -1 && low[v] >= discovery[u]) {
-                aps.add(u);
+            if (parent[currentNode] !== -1 && low[v] >= discovery[currentNode]) {
+                aps.add(currentNode);
             }
-        } else if (v !== parent[u]) {
-            low[u] = Math.min(low[u], discovery[v]);
+        } else if (v !== parent[currentNode]) {
+            low[currentNode] = Math.min(low[currentNode], discovery[v]);
         }
     }
 }
