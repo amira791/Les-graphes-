@@ -1,11 +1,11 @@
 
-
-function DFS (racine, graph, visited = new Set())
+/* La complexite de DFS : O(V + E) ou V: nb noeuds visites et E: nb arcs visites  */
+function DFS (root, graph, visited = new Set())
 {
-    console.log(racine);
-    visited.add(racine);
+    console.log(root);
+    visited.add(root);
 
-    const adjacents = graph[racine] || [];
+    const adjacents = graph[root] || [];
 
     for (const adjacent of adjacents )
         {
@@ -17,5 +17,31 @@ function DFS (racine, graph, visited = new Set())
 
 }
 
+function find_AP_Torjan (graph)
+{
+    const APs = new Set();
+    const visited = new Set();
 
-/* La complexite de DFS : O(V + E) ou V: nb noeuds visites et E: nb arcs visites  */
+   for (node in graph)
+   {
+    if (!visited.has(node))
+    {
+        DFS (node, graph, visited)
+        const connectedComponent = new Set([...visited]);   
+
+        for (const adjacent of graph[node])
+        {
+            visited.delete(adjacent);
+        }
+    }
+
+    if (connectedComponent.size < Object.keys(graph).length)
+    {
+        APs.add(node);
+    }
+   }
+
+   return Array.from(APs);
+
+}
+
