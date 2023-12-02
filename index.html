@@ -3,9 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Graphes</title>
+  <title>Points d'articulation d'un graphe</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
-  <h1>Graphes</h1>
+<h1 id="title">Points d'articulation d'un graphe</h1>
+
+<svg id="graph-container" width="800" height="600"></svg>
+<div id="graph-manipulation">
+  <button onclick="addNode()">Ajouter un sommet</button>
+  <button onclick="startLinking()">Ajouter un arrete</button>
+</div>
+
+<button onclick="AP()">Trouver les points d'articulation</button>
+<script src="script.js"></script>
 </body>
 </html>
