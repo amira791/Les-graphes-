@@ -124,7 +124,47 @@ let selectedNode = null;
 //active le mode linking pour ajouter une arrete
 function startLinking() {
     isLinking = true;
+    updateGraph();
 }
+
+/************************************************************ */
+// Function to update the graph elements
+function updateGraph() {
+  node = node.data(nodes, d => d.id);
+  node = node
+      .enter().append("circle")
+      .attr("r", 15)
+      .attr("fill", "#66a3ff")
+      .call(drag(simulation))
+      .on("click", handleNodeClick)
+      .merge(node);
+
+  labels = labels.data(nodes, d => d.id);
+  labels.exit().remove();
+  labels = labels
+      .enter().append("text")
+      .text(d => d.label)
+      .attr("font-size", 12)
+      .attr("dx", 15)
+      .merge(labels);
+
+  // Update links
+  link = link.data(links, d => `${d.source.id}-${d.target.id}`);
+  link.exit().remove();
+  link = link
+      .enter().append("line")
+      .attr("stroke", "#000000")
+      .attr("stroke-width", 2)
+      .merge(link)
+      .attr("stroke", "#66a3ff");  // Set the link color to blue
+
+  simulation.nodes(nodes);
+  simulation.force("link").links(links);
+  simulation.alpha(1).restart();
+}
+
+
+/****************************************************************** */
 
 // la fonction ajoute une arrete entre deux sommets
 function handleNodeClick(event, d) {
@@ -154,3 +194,5 @@ function handleNodeClick(event, d) {
         }
     }
 }
+
+
