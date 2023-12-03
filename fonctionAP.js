@@ -6,36 +6,54 @@ let Graph = null;
 
 function DFS(currentNode, graph, discovery, low, parent, aps, time) {
     console.log(graph);
+    let neighbors;
 
     console.log(currentNode);
     let children = 0;
-    discovery[currentNode] = low[currentNode] = ++time;
+    discovery[currentNode.id] = low[currentNode.id] = ++time;
 
-    // Find links where the current node is either the source or target
-    const relevantLinks = graph.links.filter(link => link.source.label === currentNode.label || link.target.id === currentNode.id);
-
-    const neighbors = relevantLinks.map(link => (link.source.label === currentNode.label ? link.target.id : link.source.id));
+    const relevantLinks = graph.links.filter(link => link.source.id === currentNode.id || link.target.id === currentNode.id);
+    neighbors = relevantLinks.map(link => (link.source.id === currentNode.id ? link.target.id : link.source.id));
     console.log(neighbors);
 
     for (const v of neighbors) {
         if (!discovery[v]) {
             children++;
-            parent[v] = currentNode;
-            DFS(v, graph, discovery, low, parent, aps, time);
+            parent[v] = currentNode.id;
+            DFS({ id: v }, graph, discovery, low, parent, aps, time);
 
-            low[currentNode] = Math.min(low[currentNode], low[v]);
+            low[currentNode.id] = Math.min(low[currentNode.id], low[v]);
 
-            if (parent[currentNode] === -1 && children > 1) {
+            if (parent[currentNode.id] === -1 && children > 1) {
                 aps.add(currentNode.id);
             }
 
-            if (parent[currentNode] !== -1 && low[v] >= discovery[currentNode]) {
+            if (parent[currentNode.id] !== -1 && low[v] >= discovery[currentNode.id]) {
                 aps.add(currentNode.id);
             }
-        } else if (v !== parent[currentNode]) {
-            low[currentNode] = Math.min(low[currentNode], discovery[v]);
+        } else if (v !== parent[currentNode.id]) {
+            low[currentNode.id] = Math.min(low[currentNode.id], discovery[v]);
         }
     }
+}
+
+function find_AP_Tarjan(graph) {
+    const aps = new Set();
+    const discovery = {};
+    const low = {};
+    const parent = {};
+    let time = 0;
+    const graphToUse = graph || getSavedGraph();
+
+    for (const node of graphToUse.nodes) {
+        if (!discovery[node.id]) {
+            parent[node.id] = -1;
+            DFS(node, graphToUse, discovery, low, parent, aps, time);
+        }
+    }
+
+    console.log(aps);
+    highlightAPs(aps);
 }
 
 
@@ -58,24 +76,7 @@ function createGraph() {
     return Graph;
   }
 
-  function find_AP_Tarjan(graph) {
-    const aps = new Set();
-    const discovery = {};
-    const low = {};
-    const parent = {};
-    let time = 0; // Declare 'time' with 'let' to avoid potential issues
-    const graphToUse = graph || getSavedGraph();
 
-    for (const node of graphToUse.nodes) {
-        if (!discovery[node]) {
-            parent[node] = -1;
-            DFS(node, graphToUse, discovery, low, parent, aps, time); // Pass 'time' as an argument to DFS
-        }
-    }
-
-    console.log(aps);
-    highlightAPs(aps);
-}
 
 function highlightAPs(articulationPoints) {
     // Update nodes
